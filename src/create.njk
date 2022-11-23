@@ -1,0 +1,115 @@
+---
+layout: layouts/default.njk
+title: Create
+---
+
+<div
+  class="min-h-screen flex flex-col items-center gap-8"
+  x-data="{
+    title: '',
+    author: '',
+    width: 10,
+    height: 10,
+    image: '',
+    editor: null,
+    editorInit() {
+      this.editor = new nonogram.Editor(
+        this.height,
+        this.width,
+        'editor',
+        {
+          theme: {
+            ...nonogramTheme,
+            width: this.width <= 40 ? window.innerHeight * 9/10 * this.width/this.height : window.innerWidth,
+          },
+          threshold: 0,
+          grid: this.editor ? this.editor.grid : undefined,
+          onHintChange: () => this.imageUpdate(),
+        }
+      );
+    },
+    imageUpdate() {
+      if(!this.editor) { return }
+
+      const imageFlattened = this.editor.grid.flat().map(cell => cell.toString()).join('');
+
+      let imagePadded = (imageFlattened + '0'.repeat(imageFlattened.length % 6)).split('');
+
+      const imageSliced = Array.from(
+        { length: imagePadded.length / 6 },
+        () => imagePadded.splice(0, 6)
+      );
+
+      const imageString = imageSliced.map(slice => {
+        return '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_'[parseInt(slice.join(''), 2)]
+      }).join('');
+
+      this.image = `${this.width}x${this.height}.${imageString}`;
+    },
+  }"
+  x-init="
+    editorInit();
+    $watch('width',  () => editorInit());
+    $watch('height', () => editorInit());
+  "
+>
+  <div class="p-4 flex flex-col md:flex-row justify-center gap-4">
+    <div class="w-full flex flex-col sm:flex-row items-center justify-center gap-4">
+      <div>
+        <label class="label">
+          <span class="label-text">Title <span class="text-error">*</span></span>
+        </label>
+        <input
+          type="text"
+          placeholder="The puzzle's text"
+          class="input input-bordered w-full max-w-xs"
+          x-model="title"
+        >
+      </div>
+      <div>
+        <label class="label"><span class="label-text">Author</span></label>
+        <input
+          type="text"
+          placeholder="Your nickname"
+          class="input input-bordered w-full max-w-xs"
+          x-model="author"
+        >
+      </div>
+    </div>
+    <div class="w-full flex flex-col sm:flex-row items-center justify-center gap-4">
+      <div>
+        <label class="label"><span class="label-text">Width</span></label>
+        <input
+          type="number"
+          placeholder="0"
+          min="1"
+          max="200"
+          class="input input-bordered w-full max-w-xs"
+          x-model="width"
+        >
+      </div>
+      <div>
+        <label class="label"><span class="label-text">Height</span></label>
+        <input
+          type="number"
+          placeholder="0"
+          min="1"
+          max="200"
+          class="input input-bordered w-full max-w-xs"
+          x-model="height"
+        >
+      </div>
+    </div>
+  </div>
+  <canvas id="editor"></canvas>
+  <div
+    :class="title === '' ? 'tooltip tooltip-error tooltip-open' : ''"
+    data-tip="Puzzle's title is required"
+  >
+    <a
+      class="btn"
+      :class="title === '' ? 'btn-disabled' : 'btn-primary'"
+      :href="`{{ '/puzzle' | url }}/?title=${title}&author=${author}&image=${image}`"
+    >Create</a>
+  </div>
+</div>

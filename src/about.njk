@@ -1,0 +1,176 @@
+---
+layout: layouts/default.njk
+title: About
+---
+
+<div
+  class="
+    bg-cover bg-fixed
+    bg-[url('https://images.unsplash.com/photo-1656296506976-81e916ca9d74?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80')]
+  "
+>
+<div class="bg-base-100 bg-opacity-60 backdrop-blur-md">
+
+<div class="hero">
+  <div class="hero-content -mt-8 text-center">
+    <div class="max-w-md my-16 flex flex-col items-center">
+      <svg class="w-64 h-64" xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 24 24" width="24" fill="currentColor"><path d="M4,2 L2,2 L2,4 L4,4 L4,2 Z M6,2 L6,4 L8,4 L8,2 L10,2 L10,4 L12,4 L12,2 L6,2 Z M12,6 L6,6 L6,12 L12,12 L12,6 Z M4,12 L4,10 L2,10 L2,12 L4,12 Z M2,8 L4,8 L4,6 L2,6 L2,8 Z M2,0 L12,0 C13.1045695,0 14,0.8954305 14,2 L14,12 C14,13.1045695 13.1045695,14 12,14 L2,14 C0.8954305,14 0,13.1045695 0,12 L0,2 C0,0.8954305 0.8954305,0 2,0 Z"></path></svg>
+      <h1 class="text-5xl font-bold">Evilgrams</h1>
+      <p class="py-6">
+        The best nonograms solving experience you'll ever have!
+      </p>
+      <a class="btn btn-primary" href="{{ '/' | url }}">Get Started</a>
+    </div>
+  </div>
+</div>
+
+<div class="container px-5 py-16 mx-auto">
+  <div class="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 md:space-y-0 space-y-6">
+    <template x-for="
+        feature in [
+          {
+            title: 'SuperB UI/UX',
+            description: 'We prioritise user experience first and design our website to be the slickest version of it self.',
+          },
+          {
+            title: 'Feature rich',
+            description: 'You can do anything about nonogram, on Evilgrams, from browsing and playing to analyse or even create your own puzzles.',
+          },
+          {
+            title: 'Colossal library',
+            description: 'We have over 20.000 puzles that all of them have no mistakes and have only one solution achieved without any guessing.',
+          },
+        ]
+      "
+    >
+      <div class="p-4 md:w-1/3 flex">
+        <div class="btn btn-primary btn-circle no-animation">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+        </div>
+        <div class="flex-grow pl-6">
+          <h2
+            class="text-lg title-font font-bold mb-2"
+            x-text="feature.title"
+          ></h2>
+          <p
+            class="leading-relaxed text-base text-justify"
+            x-text="feature.description"
+          ></p>
+        </div>
+      </div>
+    </template>
+  </div>
+</div>
+
+<div class="container px-5 py-16 mx-auto">
+  <h1 class="text-3xl font-medium title-font mb-12 text-center">Testimonials</h1>
+  <div class="flex flex-wrap -m-4">
+    <template x-for="
+      testimonial in [
+        {
+          quote: 'I am over 70 years old and I have never saw a nonograms website this great.',
+          title: 'Han Solo',
+          subtitle: 'CEO of S.E.G',
+          picture: 'https://randomuser.me/api/portraits/men/61.jpg',
+        },
+        {
+          quote: 'Awesome project! the developer has out done themself once again.',
+          title: 'Mari',
+          subtitle: 'CCO of L.U.V',
+          picture: 'https://randomuser.me/api/portraits/women/90.jpg',
+        },
+      ]
+    ">
+      <div class="p-4 md:w-1/2 w-full">
+        <div class="h-full bg-base-100 bg-opacity-80 p-8 rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="block w-5 h-5 mb-4" viewBox="0 0 975.036 975.036">
+            <path d="M925.036 57.197h-304c-27.6 0-50 22.4-50 50v304c0 27.601 22.4 50 50 50h145.5c-1.9 79.601-20.4 143.3-55.4 191.2-27.6 37.8-69.399 69.1-125.3 93.8-25.7 11.3-36.8 41.7-24.8 67.101l36 76c11.6 24.399 40.3 35.1 65.1 24.399 66.2-28.6 122.101-64.8 167.7-108.8 55.601-53.7 93.7-114.3 114.3-181.9 20.601-67.6 30.9-159.8 30.9-276.8v-239c0-27.599-22.401-50-50-50zM106.036 913.497c65.4-28.5 121-64.699 166.9-108.6 56.1-53.7 94.4-114.1 115-181.2 20.6-67.1 30.899-159.6 30.899-277.5v-239c0-27.6-22.399-50-50-50h-304c-27.6 0-50 22.4-50 50v304c0 27.601 22.4 50 50 50h145.5c-1.9 79.601-20.4 143.3-55.4 191.2-27.6 37.8-69.4 69.1-125.3 93.8-25.7 11.3-36.8 41.7-24.8 67.101l35.9 75.8c11.601 24.399 40.501 35.2 65.301 24.399z"></path>
+          </svg>
+          <p
+            class="leading-relaxed mb-6 text-justify"
+            x-text="testimonial.quote"
+          ></p>
+          <a class="inline-flex items-center">
+            <img
+              :src="testimonial.picture"
+              class="w-12 h-12 avatar mask mask-squircle"
+            >
+            <span class="flex-grow flex flex-col pl-4">
+              <span class="title-font font-medium" x-text="testimonial.title"></span>
+              <span class="text-sm" x-text="testimonial.subtitle"></span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </template>
+  </div>
+</div>
+
+<div class="hero py-16 bg-base-200 bg-opacity-40">
+  <div class="hero-content max-w-5xl flex-col lg:flex-row">
+    <img
+      src="https://www.puzzlemuseum.com/griddler/pics/grid6stk.jpg"
+      class="max-w-xs sm:max-w-sm rounded-lg shadow-2xl"
+    >
+    <div class="flex flex-col items-center lg:items-start gap-6">
+      <h1 class="text-5xl font-bold">Nonograms</h1>
+      <p class="text-justify">
+        Nonograms, also known as Hanjie, Paint by Numbers, Picross, Griddlers,
+        and Pic-a-Pix, and by various other names, are picture logic puzzles in
+        which cells in a grid must be colored or left blank according to numbers
+        at the side of the grid to reveal a hidden pixel art-like picture. In
+        this puzzle type, the numbers are a form of discrete tomography that
+        measures how many unbroken lines of filled-in squares there are in any
+        given row or column.
+      </p>
+      <p class="text-justify">
+        These puzzles are often black and white describing a binary image but
+        they can also be colored. If colored, the number clues are also colored
+        to indicate the color of the squares. Two differently colored numbers
+        may or may not have a space in between them. For example, a black four
+        followed by a red two could mean four black boxes, some empty spaces,
+        and two red boxes, or it could simply mean four black boxes followed
+        immediately by two red ones. Nonograms have no theoretical limits on
+        size, and are not restricted to square layouts.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="hero py-16 bg-base-300 bg-opacity-60">
+  <div class="hero-content max-w-5xl flex-col lg:flex-row-reverse">
+    <img
+      src="https://www.puzzlemuseum.com/griddler/pics/4nonobks.jpg"
+      class="max-w-xs sm:max-w-sm rounded-lg shadow-2xl"
+    >
+    <div class="flex flex-col items-center lg:items-start gap-6">
+      <h1 class="text-5xl font-bold">History</h1>
+      <p class="text-justify">
+        In 1987, Non Ishida, a Japanese graphics editor, won a competition in
+        Tokyo by designing grid pictures using skyscraper lights that were
+        turned on or off. This led her to the idea of a puzzle based around
+        filling in certain squares in a grid. Coincidentally, a professional
+        Japanese puzzler named Tetsuya Nishio invented the same puzzles
+        completely independently, and published them in another magazine.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="hero min-h-screen bg-base-200 bg-opacity-40">
+  <div class="hero-content text-center">
+    <div class="max-w-md flex flex-col items-center">
+      <h1 class="mb-4 text-3xl font-bold">Open Source</h1>
+      <svg class="w-32 h-32" fill="currentColor" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Open Source Initiative</title><path d="M11.959.447A11.938 11.938 0 000 12.407c0 5.576 3.874 10.097 7.783 11.114.193.05.392-.05.467-.234l2.771-6.822a.396.396 0 00-.246-.528C9.365 15.47 8.53 14.32 8.48 12.4c-.024-1.828 1.5-3.45 3.561-3.447 1.931.003 3.479 1.632 3.479 3.453 0 .966-.203 1.687-.575 2.238-.371.552-.922.951-1.695 1.239a.396.396 0 00-.23.515l2.685 6.903a.396.396 0 00.465.24C20.163 22.534 24 18.062 24 12.406 24 5.804 18.603.447 11.959.447zm0 .791c6.22 0 11.25 4.997 11.25 11.168 0 5.138-3.423 9.208-6.895 10.272L13.9 16.47c.703-.308 1.302-.79 1.702-1.384.477-.708.709-1.602.709-2.68 0-2.266-1.898-4.24-4.27-4.244-2.48-.004-4.382 1.976-4.352 4.25.023 1.995.934 3.492 2.451 4.13L7.648 22.66C4.251 21.592.791 17.458.791 12.406A11.13 11.13 0 0111.959 1.238zm10.617 20.149a1.03 1.03 0 000 2.058 1.03 1.03 0 000-2.058zm0 .162c.48 0 .865.388.865.867a.856.856 0 01-.271.623l-.172-.342a.847.847 0 00-.111-.178.263.263 0 00-.114-.084.301.301 0 00.17-.117.356.356 0 00.061-.21c0-.13-.038-.227-.113-.292-.076-.064-.192-.095-.346-.095h-.41v1.343h.181v-.568h.2c.072 0 .128.015.17.045a.48.48 0 01.129.18l.171.343.157.001a.878.878 0 01-.567.216.865.865 0 010-1.732zm-.26.322h.229c.088 0 .155.018.2.059.044.04.066.099.066.177 0 .079-.022.14-.067.18-.044.04-.111.06-.2.06h-.228z"/></svg>
+      <p class="py-6 max-w-3xl">
+        The project is fully open source! Feel free to take a look at the source,
+        fork the repo, open an issue, make a pull request...
+      </p>
+      <a class="btn btn-primary" href="https://github.com/NNBnh/evilgrams">
+        Contribute
+      </a>
+    </div>
+  </div>
+</div>
+
+</div></div>
