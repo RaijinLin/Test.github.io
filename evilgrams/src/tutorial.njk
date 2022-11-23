@@ -1,0 +1,193 @@
+---
+layout: layouts/default.njk
+title: Tutorial
+---
+
+
+
+
+<div
+  x-init="
+    new nonogram.Game(
+      [[0], [1], [0]],
+      [[0], [1], [0]],
+      'tutorial0',
+      { theme: nonogramTheme },
+    );
+    new nonogram.Game(
+      [[1, 1], [3], [1]],
+      [[2], [2], [2]],
+      'tutorial1',
+      { theme: nonogramTheme },
+    );
+    new nonogram.Game(
+      [[1], [2], [3], [1, 1]],
+      [[2], [1], [4], [1]],
+      'tutorial2',
+      { theme: nonogramTheme },
+    );
+    new nonogram.Game(
+      [[3], [1], [1, 1], [3]],
+      [[0], [2], [1, 1], [4], [1]],
+      'tutorial3',
+      { theme: nonogramTheme },
+    );
+    new nonogram.Game(
+      [[5], [1, 1], [1, 1], [1, 1], [1, 2]],
+      [[1], [5], [1], [5], [1, 1]],
+      'tutorial4',
+      { theme: nonogramTheme },
+    );
+    new nonogram.Game(
+      [[2, 2], [3], [1, 1, 1], [2, 2], [3]],
+      [[1, 2], [2, 2], [2, 1], [2, 2], [1, 2]],
+      'tutorial5',
+      { theme: nonogramTheme },
+    );
+    new nonogram.Game(
+      [[1, 3, 1], [2, 1, 2], [3], [1, 1], [1]],
+      [[2], [1], [1, 2], [3, 1], [1, 2], [1], [2]],
+      'tutorial6',
+      { theme: nonogramTheme },
+    );
+  "
+>
+
+<div class="hero">
+  <div class="hero-content my-4 md:my-8 flex-col md:flex-row max-w-5xl lg:gap-8">
+    <div class="flex flex-col items-center md:items-start gap-6">
+      <h1 class="text-5xl font-bold">Tutorial</h1>
+      <p class="text-justify">
+        To solve a puzzle, one needs to determine which cells will be boxes and
+        which will be empty. Solvers often use a dot or a cross to mark cells
+        they are certain are spaces. Cells that can be determined by logic
+        should be filled. If guessing is used, a single error can spread over
+        the entire field and completely ruin the solution. An error sometimes
+        comes to the surface only after a while, when it is very difficult to
+        correct the puzzle. The hidden picture plays little or no part in the
+        solving process, as it may mislead. The picture may help find and
+        eliminate an error.
+      </p>
+    </div>
+    <canvas id="tutorial0" class="max-w-xs rounded-lg shadow-2xl bg-base-300"></canvas>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-content my-4 md:my-8 flex-col-reverse md:flex-row max-w-5xl lg:gap-8">
+    <canvas id="tutorial1" class="max-w-xs rounded-lg shadow-2xl bg-base-300"></canvas>
+    <div class="flex flex-col items-center md:items-start gap-6">
+      <p class="text-justify">
+        Many puzzles can be solved by reasoning on a single row or column at a
+        time only, then trying another row or column, and repeating until the
+        puzzle is complete. More difficult puzzles may also require several
+        types of "what if?" reasoning that include more than one row (or column).
+        This works on searching for contradictions, e.g., when a cell cannot be
+        a box because some other cell would produce an error, it must be a space.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-content my-4 md:my-8 flex-col md:flex-row max-w-5xl lg:gap-8">
+    <div class="flex flex-col items-center md:items-start gap-6">
+      <h1 class="text-5xl font-bold">Simple boxes</h1>
+      <p class="text-justify">
+        At the beginning of the solution, a simple method can be used to
+        determine as many boxes as possible. This method uses conjunctions of
+        possible places for each block of boxes. For example, in a row of ten
+        cells with only one clue of 8, the bound block consisting of 8 boxes
+        could spread from:
+      </p>
+      <ul class="list-disc list-inside">
+        <li>The right border, leaving two spaces to the left.</li>
+        <li>The left border, leaving two spaces to the right.</li>
+        <li>Or somewhere in between.</li>
+      </ul>
+      <p class="text-justify">
+        As a result, the block must spread through the six centermost cells in
+        the row.
+      </p>
+    </div>
+    <canvas id="tutorial2" class="max-w-xs rounded-lg shadow-2xl bg-base-300"></canvas>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-content my-4 md:my-8 flex-col-reverse md:flex-row max-w-5xl lg:gap-8">
+    <canvas id="tutorial3" class="max-w-xs rounded-lg shadow-2xl bg-base-300"></canvas>
+    <div class="flex flex-col items-center md:items-start gap-6">
+      <p class="text-justify">
+        The same applies when there are more clues in the row. For example, in a
+        row of ten cells with clues of 4 and 3, the bound blocks of boxes could
+        be:
+      </p>
+      <ul class="list-disc list-inside">
+        <li>Crowded to the left, one next to the other, leaving two spaces to the right.</li>
+        <li>Crowded to the right, one just next to the other, leaving two spaces to the left.</li>
+        <li>Or somewhere between.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-content my-4 md:my-8 flex-col md:flex-row max-w-5xl lg:gap-8">
+    <div class="flex flex-col items-center md:items-start gap-6">
+      <h1 class="text-5xl font-bold">Simple spaces</h1>
+      <p class="text-justify">
+        This method consists of determining spaces by searching for cells that
+        are out of range of any possible blocks of boxes. For example,
+        considering a row of ten cells with boxes in the fourth and ninth cell
+        and with clues of 3 and 1, the block bound to the clue 3 will spread
+        through the fourth cell and clue 1 will be at the ninth cell.
+      </p>
+      <p class="text-justify">
+        First, the clue 1 is complete and there will be a space at each side of
+        the bound block.
+      </p>
+      <p class="text-justify">
+        Second, the clue 3 can only spread somewhere between the second cell and
+        the sixth cell, because it always has to include the fourth cell;
+        however, this may leave cells that may not be boxes in any case, i.e.
+        the first and the seventh.
+      </p>
+    </div>
+    <canvas id="tutorial4" class="max-w-xs rounded-lg shadow-2xl bg-base-300"></canvas>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-content my-4 md:my-8 flex-col-reverse md:flex-row max-w-5xl lg:gap-8">
+    <canvas id="tutorial5" class="max-w-xs rounded-lg shadow-2xl bg-base-300"></canvas>
+    <div class="flex flex-col items-center md:items-start gap-6">
+      <h1 class="text-5xl font-bold">Forcing</h1>
+      <p class="text-justify">
+        In this method, the significance of the spaces will be shown. A space
+        placed somewhere in the middle of an uncompleted row may force a large
+        block to one side or the other. Also, a gap that is too small for any
+        possible block may be filled with spaces.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-content my-4 md:my-8 flex-col md:flex-row max-w-5xl lg:gap-8">
+    <div class="flex flex-col items-center md:items-start gap-6">
+      <p class="text-justify">
+        For example, considering a row of ten cells with spaces in the fifth and
+        seventh cells and with clues of 3 and 2:
+      </p>
+      <ul class="list-disc list-inside">
+        <li>The clue of 3 would be forced to the left, because it could not fit anywhere else.</li>
+        <li>The empty gap on the sixth cell is too small to accommodate clues like 2 or 3 and may be filled with spaces.</li>
+        <li>Finally, the clue of 2 will spread through the ninth cell according to method Simple Boxes above.</li>
+      </ul>
+    </div>
+    <canvas id="tutorial6" class="max-w-xs rounded-lg shadow-2xl bg-base-300"></canvas>
+  </div>
+</div>
+
+</div>

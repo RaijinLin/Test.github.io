@@ -1,0 +1,236 @@
+---
+layout: layouts/default.njk
+title: Puzzles
+---
+
+<div
+  x-data="
+    {
+      puzzle: {},
+      width: 0,
+      height: 0,
+      solved: false,
+    }
+  "
+  x-init="
+    if(id) {
+      puzzle = puzzles.filter(puzzle => puzzle.id === id)[0];
+      document.title = 'Evilgrams - #' + id;
+    } else {
+      const params = new URLSearchParams(location.search)
+
+      puzzle = {
+        title: params.get('title'),
+        author: params.get('author'),
+        image: params.get('image'),
+      };
+
+      document.title = 'Evilgrams - Custom puzzle';
+    }
+
+    const image = puzzle.image.split('.');
+
+    width  = parseInt(image[0].split('x')[0]);
+    height = parseInt(image[0].split('x')[1]);
+
+    const dataPrepare = image[1].split('').map(char => {
+      return '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_'
+      .indexOf(char).toString(2).padStart(6, '0');
+    }).join('').split('')
+    
+    const data = Array.from({ length: height }, () => dataPrepare.splice(0, width));
+
+    function clueGenerate(data) {
+      return data.map(line => {
+        let clues = [];
+        let clue = 0;
+
+        line.forEach(cell => {
+          if(cell === '1') {
+            clue++;
+          } else {
+            clues.push(clue);
+            clue = 0;
+          }
+        });
+
+        if(clue !== 0) {
+          clues.push(clue)
+        }
+
+        return clues;
+      });
+    }
+
+    new nonogram.Game(
+      clueGenerate(data),
+      clueGenerate(data[0].map((_, colIndex) => data.map(row => row[colIndex]))),
+      'game',
+      {
+        theme: {
+          ...nonogramTheme,
+          width: width <= 40 ? window.innerHeight * 9/10 * width/height : window.innerWidth,
+        },
+        onSuccess() { solved = true },
+      },
+    );
+
+    new nonogram.Solver(
+      clueGenerate(data),
+      clueGenerate(data[0].map((_, colIndex) => data.map(row => row[colIndex]))),
+      'solver',
+      { theme: nonogramTheme },
+    );
+  "
+>
+
+<input type="checkbox" id="info-modal" class="modal-toggle" />
+<label class="modal cursor-pointer" for="info-modal">
+  <label class="modal-box relative" for="">
+    <h3 class="mb-4 text-center font-bold text-lg">Puzzle's information</h3>
+    <ol class="list-inside list-disc font-mono">
+      <li>Title:
+        <span x-show="showTitle" x-text="puzzle.title"></span>
+        <button class="group" x-show="!showTitle">
+          <span class="hidden group-focus:inline" x-text="puzzle.title"></span>
+          <span class="inline group-focus:hidden italic bg-base-300">
+            &nbsp;(Click to show title)&nbsp;
+          </span>
+        </button>
+      </li>
+      <li x-show="puzzle.date">Date: <span x-text="puzzle.date"></span></li>
+      <li>Author:
+        <a
+          class="link"
+          :href="'https://github.com/' + puzzle.author"
+          x-text="puzzle.author"
+        ></a>
+      </li>
+      <li>Difficulty:
+        <div class="rating rating-xs gap-1">
+          <input type="radio" class="mask mask-star-2" />
+          <input type="radio" class="mask mask-star-2" />
+          <input type="radio" class="mask mask-star-2" checked />
+          <input type="radio" class="mask mask-star-2" />
+          <input type="radio" class="mask mask-star-2" />
+        </div>
+      </li>
+      <li>Picture:
+        <div class="rating rating-xs gap-1">
+          <input type="radio" class="mask mask-star-2" />
+          <input type="radio" class="mask mask-star-2" />
+          <input type="radio" class="mask mask-star-2" checked />
+          <input type="radio" class="mask mask-star-2" />
+          <input type="radio" class="mask mask-star-2" />
+        </div>
+      </li>
+    </ol>
+  </label>
+</label>
+
+<input type="checkbox" id="solver-modal" class="modal-toggle" />
+<label class="modal cursor-pointer" for="solver-modal">
+  <label class="modal-box relative" for="">
+    <h3 class="mb-4 text-center font-bold text-lg">Nonogram solver</h3>
+    <canvas id="solver" class="w-full"></canvas>
+  </label>
+</label>
+
+<div
+  class="w-full p-4 flex items-center gap-4"
+  x-data="
+    {
+      stopwatchStart: null,
+      stopwatchCurrent: null,
+      titleReveal: false,
+    }
+  "
+  x-init="
+    stopwatchStart = Date.now();
+    stopwatchCurrent = stopwatchStart;
+    let stopwatch = setInterval(
+      () => {
+        stopwatchCurrent = Date.now();
+        if(solved) {
+          titleReveal = true;
+          let time = stopwatchCurrent - stopwatchStart;
+
+          if(!puzzle.id) { return };
+
+          const addedPuzzle = puzzlesSolved.findIndex(puzzleSolved => {
+            const matchPuzzleId = puzzleSolved.id === puzzle.id;
+            const moreTime = puzzleSolved.time > time;
+            return matchPuzzleId && moreTime;
+          });
+
+          if(addedPuzzle !== -1) { puzzlesSolved.splice(addedPuzzle, 1) };
+
+          puzzlesSolved.push({
+            id: puzzle.id,
+            time: time,
+          });
+
+          clearInterval(stopwatch);
+        }
+      },
+      100
+    );
+  "
+>
+  <label
+    class="btn btn-sm btn-outline font-mono normal-case"
+    x-text="width + 'x' + height"
+    for="info-modal"
+  >??x??</label>
+  <div class="grow text-center xs:text-2xl font-bold truncate">
+    <span x-show="showTitle || titleReveal" x-text="puzzle.title"></span>
+  </div>
+  <button
+    class="btn btn-sm btn-info no-animation font-mono"
+    x-text="durationFormat(stopwatchCurrent - stopwatchStart)"
+  >00:00</button>
+</div>
+
+<div class="flex flex-col items-center pb-8 gap-8">
+  <canvas id="game" class="max-w-full"></canvas>
+
+  <div class="flex gap-2">
+    <label class="btn btn-sm btn-circle btn-accent" for="solver-modal">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -6 24 24" width="24" fill="currentColor"><path d="M10 12c-5.042.007-10-2.686-10-6S4.984-.017 10 0c5.016.017 10 2.686 10 6s-4.958 5.993-10 6zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0-2a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path></svg>
+    </label>
+    <div
+      class="
+        a2a_kit a2a_kit_size_24 a2a_default_style
+        p-1 rounded-full bg-gray-800 dark:border dark:border-gray-500
+      "
+      data-a2a-icon-color="transparent"
+    >
+      <a class="a2a_button_copy_link"></a>
+      <a class="a2a_button_twitter"></a>
+      <a class="a2a_button_facebook"></a>
+      <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+    </div>
+    <script async src="https://static.addtoany.com/menu/page.js"></script>
+  </div>
+
+  <div x-show="puzzle.id" class="w-full max-w-4xl px-4">
+    <script src="https://giscus.app/client.js"
+      data-repo="NNBnh/evilgrams"
+      data-repo-id="R_kgDOH3aVHA"
+      data-category="Puzzles"
+      data-category-id="DIC_kwDOH3aVHM4CRZtJ"
+      data-mapping="title"
+      data-strict="0"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="top"
+      data-theme="preferred_color_scheme"
+      crossorigin="anonymous"
+      async
+    ></script>
+  </div>
+
+  {# #TODO Submit puzzle #}
+</div>
+
+</div>
